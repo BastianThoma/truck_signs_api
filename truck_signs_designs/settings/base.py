@@ -21,13 +21,28 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+import environ
+
+# initialize the environment
+env = environ.Env()
+
+# read the .env file
+env.read_env(os.path.join(os.path.dirname(__file__), '.env'))
+
+# get the secret key
+SECRET_KEY = env('SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 
 
+# debug mode (checking .env variable for wich debug mode is set 
+# when its none, the default=False is set for Security purposes.)
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
+# allowed hosts
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 
-
-# Application definition
+# application definition
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -77,24 +92,17 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'NAME_OF_DB',
-#         'USER': 'DB_USER_NAME',
-#         'PASSWORD': 'DB_PASSWORD',
-#         'HOST': 'localhost',
-#         'PORT': 'PORT_NUMBER',
-#     }
-# }
-
+# database configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+    }
+}
 
 
 # Password validation
@@ -147,9 +155,6 @@ MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
 
 # STRIPE_PUBLISHABLE_KEY=os.getenv("STRIPE_PUBLISHABLE_KEY")
 # STRIPE_SECRET_KEY=os.getenv("STRIPE_SECRET_KEY")
-
-
-
 
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 # EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
