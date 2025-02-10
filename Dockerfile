@@ -5,7 +5,7 @@ FROM python:3.8
 WORKDIR /app
 
 # install netcat
-RUN apt-get update && apt-get install -y netcat
+RUN apt-get update && apt-get install -y netcat-openbsd
 
 # install dependencies
 COPY requirements.txt .
