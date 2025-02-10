@@ -57,7 +57,7 @@ The behavior of some of the views had to be modified to address functionalities 
    1. Copy the content of the example env file that is inside the `truck_signs_designs/settings` folder into a .env file:
 
       ```bash
-      cd truck_signs_designs/settings
+      cd truck_signs_api/truck_signs_designs/settings
       cp simple_env_config.env .env
       ```
 
