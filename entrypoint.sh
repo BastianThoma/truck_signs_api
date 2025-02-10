@@ -3,7 +3,7 @@ set -e
 
 echo "Waiting for postgres to connect ..."
 
-while ! nc -z postgres_container 5432; do
+while ! nc -z trucksigns_db_container 5432; do
   sleep 0.1
 done
 
