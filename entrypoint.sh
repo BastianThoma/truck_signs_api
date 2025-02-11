@@ -4,7 +4,7 @@ set -e
 echo "Waiting for postgres to connect ..."
 
 while ! nc -z trucksigns_db_container 5432; do
-  sleep 0.1
+  sleep 1
 done
 
 echo "PostgreSQL is active"
@@ -26,6 +26,6 @@ fi;
 
 echo "Creating superuser ..."
 
-python manage.py createsuperuser --no-input || echo "Superuser already exists or could not be created."
+PYTHONPATH=/app python /app/truck_signs_designs/scripts/create_superuser.py
 
 gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000

@@ -27,6 +27,5 @@ def home_view(request):
 urlpatterns = [
     path('admin/', admin.site.urls),  # Standard admin route
     path("", home_view, name="home"),  # This path is a custom home page view
-    # path('', HomePageAPI, name='home'), 
     path('truck-signs/', include('backend.urls', namespace='trucks-signs-namespace')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
