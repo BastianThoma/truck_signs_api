@@ -10,11 +10,65 @@
 
 ## Table of Contents
 
+- [Quickstart](#quickstart)
 - [Description](#description)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Superuser Auto Creation](#superuser-auto-creation)
 - [Screenshots of the Django Backend Admin Panel](#screenshots)
 - [Useful Links](#useful_links)
+
+## Quickstart
+
+To quickly get started with **Signs for Trucks**, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone <INSERT URL>
+   ```
+
+2. Navigate into the project directory:
+
+   ```bash
+   cd truck_signs_api
+   ```
+
+3. Set up a virtual environment:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+
+4. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. Configure environment variables:
+
+   ```bash
+   cp truck_signs_designs/settings/simple_env_config.env truck_signs_designs/settings/.env
+   ```
+
+6. Run migrations and start the server:
+
+   ```bash
+   python manage.py migrate
+   python manage.py runserver
+   ```
+
+7. (Optional) Create a superuser:
+
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+8. Access the app at [localhost:8000](http://localhost:8000).
+
+---
 
 ## Description
 
@@ -109,11 +163,6 @@ The behavior of some of the views had to be modified to address functionalities 
    ```
 
 1. Congratulations =) !!! The App should be running in [localhost:8000](http://localhost:8000)
-1. (Optional step) To create a super user run:
-
-   ```bash
-   python manage.py createsuperuser
-   ```
 
 ## Usage
 
@@ -170,6 +219,43 @@ The behavior of some of the views had to be modified to address functionalities 
    - `<image-name>:<image-tag>`: The name of your image as a result of the build process.
 
 **NOTE:** To create Truck vinyls with Truck logos in them, first create the **Category** Truck Sign, and then the **Product** (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
+
+## Superuser Auto-Creation
+
+The following script automatically creates a Django superuser using environment variables:
+
+```python
+import os
+import django
+from django.contrib.auth import get_user_model
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "truck_signs_designs.settings")
+django.setup()
+
+User = get_user_model()
+
+username = os.getenv("DJANGO_SUPERUSER_USERNAME")
+email = os.getenv("DJANGO_SUPERUSER_EMAIL")
+password = os.getenv("DJANGO_SUPERUSER_PASSWORD")
+
+if not username or not email or not password:
+    print("Superuser data is missing. Please check environment variables.")
+    exit(1)
+
+if not User.objects.filter(username=username).exists():
+    print(f"Creating superuser: {username}")
+    User.objects.create_superuser(username=username, email=email, password=password)
+else:
+    print("Superuser already exists.")
+```
+
+The script for creating a superuser is automatically executed through the `entrypoint.sh` script with the following command:
+
+```bash
+PYTHONPATH=/app python /app/truck_signs_designs/scripts/create_superuser.py
+```
+
+To configure the superuser's credentials, you need to add the required variables (username, email, and password) in the `.env` file.
 
 ---
 
