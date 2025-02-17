@@ -14,7 +14,6 @@
 - [Description](#description)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Superuser Auto Creation](#superuser-auto-creation)
 - [Screenshots of the Django Backend Admin Panel](#screenshots)
 - [Useful Links](#useful_links)
 
@@ -219,43 +218,6 @@ The behavior of some of the views had to be modified to address functionalities 
    - `<image-name>:<image-tag>`: The name of your image as a result of the build process.
 
 **NOTE:** To create Truck vinyls with Truck logos in them, first create the **Category** Truck Sign, and then the **Product** (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
-
-## Superuser Auto-Creation
-
-The following script automatically creates a Django superuser using environment variables:
-
-```python
-import os
-import django
-from django.contrib.auth import get_user_model
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "truck_signs_designs.settings")
-django.setup()
-
-User = get_user_model()
-
-username = os.getenv("DJANGO_SUPERUSER_USERNAME")
-email = os.getenv("DJANGO_SUPERUSER_EMAIL")
-password = os.getenv("DJANGO_SUPERUSER_PASSWORD")
-
-if not username or not email or not password:
-    print("Superuser data is missing. Please check environment variables.")
-    exit(1)
-
-if not User.objects.filter(username=username).exists():
-    print(f"Creating superuser: {username}")
-    User.objects.create_superuser(username=username, email=email, password=password)
-else:
-    print("Superuser already exists.")
-```
-
-The script for creating a superuser is automatically executed through the `entrypoint.sh` script with the following command:
-
-```bash
-PYTHONPATH=/app python /app/truck_signs_designs/scripts/create_superuser.py
-```
-
-To configure the superuser's credentials, you need to add the required variables (username, email, and password) in the `.env` file.
 
 ---
 
