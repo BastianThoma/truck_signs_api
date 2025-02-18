@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include  # Uses 'path' (recommended method in Django 2.x+)
+from django.urls import path
+from django.conf.urls import url,include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
@@ -28,4 +29,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # Standard admin route
     path("", home_view, name="home"),  # This path is a custom home page view
     path('truck-signs/', include('backend.urls', namespace='trucks-signs-namespace')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

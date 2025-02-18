@@ -207,7 +207,6 @@ The behavior of some of the views had to be modified to address functionalities 
       --network <network-name> \
       -p 8020:8000 \
       -v <media-volume>:/app/media \
-      -v <static-volume>:/app/static \
       --restart on-failure \
       <image-name>:<image-tag>
    ```

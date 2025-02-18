@@ -34,6 +34,10 @@ SECRET_KEY = env('SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 
+# get superuser credentials
+DJANGO_SUPERUSER_USERNAME = env('DJANGO_SUPERUSER_USERNAME', default='admin')
+DJANGO_SUPERUSER_EMAIL = env('DJANGO_SUPERUSER_EMAIL', default='admin@example.com')
+DJANGO_SUPERUSER_PASSWORD = env('DJANGO_SUPERUSER_PASSWORD', default='supersecurepassword')
 
 # debug mode (checking .env variable for wich debug mode is set 
 # when its none, the default=False is set for Security purposes.)
@@ -59,6 +63,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -143,7 +148,9 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = (os.path.join(ROOT_BASE_DIR, 'static'),)
-STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # STATICFILES_FINDERS = (
 # 'django.contrib.staticfiles.finders.FileSystemFinder',
